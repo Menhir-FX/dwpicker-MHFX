@@ -12,7 +12,7 @@ from dwpicker.optionvar import (
     NAMESPACE_TOOLBAR, SYNCHRONYZE_SELECTION, TRIGGER_REPLACE_ON_MIRROR,
     USE_BASE64_DATA_ENCODING, USE_PROD_PICKER_DIR_AS_DEFAULT,
     USE_ICON_FOR_UNSAVED_TAB, WARN_ON_TAB_CLOSED, ZOOM_SENSITIVITY,
-    ZOOM_BUTTON, ZOOM_BUTTONS)
+    ZOOM_BUTTON, ZOOM_BUTTONS, KEEP_HIERARCHY)
 from dwpicker.path import unix_path
 
 
@@ -114,10 +114,13 @@ class GeneralPreferences(QtWidgets.QWidget):
 
         text = "Encode in-scene data as base64."
         self.use_base64_encoding = QtWidgets.QCheckBox(text)
+        text = "Keep ctrl herarchy when changing namespace"
+        self.keep_hierarchy = QtWidgets.QCheckBox(text)
 
         self.data_group = QtWidgets.QGroupBox("Data")
         self.data_layout = QtWidgets.QVBoxLayout(self.data_group)
         self.data_layout.addWidget(self.use_base64_encoding)
+        self.data_layout.addWidget(self.keep_hierarchy)
 
         self.auto_focus = QtWidgets.QComboBox()
         self.auto_focus.addItems(list(AUTO_FOCUSES))
@@ -193,6 +196,7 @@ class GeneralPreferences(QtWidgets.QWidget):
         self.warn_on_tab_close.released.connect(self.save_ui_states)
         self.zoom_sensitivity.valueChanged.connect(self.save_ui_states)
         self.zoom_button.currentIndexChanged.connect(self.save_ui_states)
+        self.keep_hierarchy.released.connect(self.save_ui_states)
 
     def sizeHint(self):
         return QtCore.QSize(520, 600)
@@ -238,6 +242,8 @@ class GeneralPreferences(QtWidgets.QWidget):
         self.insert_after_current.setChecked(state)
         state = bool(cmds.optionVar(query=TRIGGER_REPLACE_ON_MIRROR))
         self.search_on_mirror.setChecked(state)
+        state = bool(cmds.optionVar(query=KEEP_HIERARCHY))
+        self.keep_hierarchy.setChecked(state)
 
         value = MAX_SENSITIVITY - cmds.optionVar(query=ZOOM_SENSITIVITY)
         self.zoom_sensitivity.setSliderPosition(value)
@@ -285,5 +291,7 @@ class GeneralPreferences(QtWidgets.QWidget):
         save_optionvar(ZOOM_BUTTON, self.zoom_button.currentText())
         value = MAX_SENSITIVITY - int(self.zoom_sensitivity.value()) + 1
         save_optionvar(ZOOM_SENSITIVITY, value)
+        value = int(self.keep_hierarchy.isChecked())
+        save_optionvar(KEEP_HIERARCHY, value)
         if self.callback:
             self.callback()

@@ -49,6 +49,7 @@ USE_PROD_PICKER_DIR_AS_DEFAULT = 'dwpicker_user_prod_picker_dir_for_import'
 ZOOM_BUTTON = 'dwpicker_picker_zoom_mouse_button'
 WARN_ON_TAB_CLOSED = 'dwpicker_warn_on_tab_closed'
 ZOOM_SENSITIVITY = 'dwpicker_zoom_sensitivity'
+KEEP_HIERARCHY = 'dwpicker_keep_hierarchy'
 
 
 OPTIONVARS = {
@@ -106,7 +107,8 @@ OPTIONVARS = {
     USE_PROD_PICKER_DIR_AS_DEFAULT: 0,
     WARN_ON_TAB_CLOSED: 0,
     ZOOM_BUTTON: ZOOM_BUTTONS[2],
-    ZOOM_SENSITIVITY: 50
+    ZOOM_SENSITIVITY: 50,
+    KEEP_HIERARCHY: 1
 }
 
 

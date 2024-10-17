@@ -1,5 +1,6 @@
 
 from contextlib import contextmanager
+from dwpicker.optionvar import KEEP_HIERARCHY
 from maya import cmds
 
 
@@ -52,11 +53,22 @@ def maya_namespace(
 
 
 def switch_namespace(name, namespace):
-    basename = name.split("|")[-1]
-    name = basename if ":" not in basename else basename.split(":")[-1]
     if not namespace:
         return name
-    return namespace + ":" + name
+
+    if KEEP_HIERARCHY:
+        targets = name.split('|')
+        full_name = []
+        for target in targets:
+            hierarchy = target.split(':')[-1]
+            new = f"{namespace}:{hierarchy}"
+            full_name.append(new)
+        return '|'.join(full_name)
+    else:
+        basename = name.split("|")[-1]
+        name = basename if ":" not in basename else basename.split(":")[-1]
+        
+        return namespace + ":" + name
 
 
 def selected_namespace():

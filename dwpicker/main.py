@@ -469,7 +469,7 @@ class DwPicker(DockableBase, QtWidgets.QWidget):
         shapes = [Shape(s) for s in data['shapes']]
         picker.set_shapes(shapes)
         picker.reset()
-        picker.zoom_locked = data['general']['zoom_locked']
+        picker.zoom_locked = data['general'].get('zoom_locked', False)
         return picker
 
     def add_picker(self, data, filename=None, modified_state=False):
@@ -741,7 +741,7 @@ class DwPicker(DockableBase, QtWidgets.QWidget):
         self.generals[index] = data['general']
         shapes = [Shape(s) for s in data['shapes']]
         picker.set_shapes(shapes)
-        picker.zoom_locked = data['general']['zoom_locked']
+        picker.zoom_locked = data['general'].get('zoom_locked', False)
         self.set_title(index, data['general']['name'])
         self.set_modified_state(index, True)
         self.store_local_pickers_data()
